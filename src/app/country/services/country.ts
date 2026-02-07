@@ -18,7 +18,7 @@ export class CountryService {
     query = query.toLowerCase();
     return this.http.get<RESTCountry[]>(`${API_URL}/capital/${query}`)
     .pipe(
-      map((resp) => CountryMapper.mapRestCountryArrayToCountryArray(resp)));
+      map((resp) => CountryMapper.mapRestCountryArrayToCountry(resp)));
   }
 
 }

@@ -8,7 +8,7 @@ export class CountryMapper {
   //static RestCountry => Country
   static mapRestCountryToCountry(restCountry: RESTCountry): Country {
     return {
-      name: restCountry.name.common,
+      name: restCountry.translations['spa']?.common || restCountry.name.common,
       cca2: restCountry.cca2,
       capital: restCountry.capital.join(', '),
       population: restCountry.population,
@@ -18,7 +18,7 @@ export class CountryMapper {
   }
 
   //static RestCountry[] => Country[]
-  static mapRestCountryArrayToCountryArray(restCountries: RESTCountry[]): Country[] {
+  static mapRestCountryArrayToCountry(restCountries: RESTCountry[]): Country[] {
     return restCountries.map(this.mapRestCountryToCountry);
   }
 
