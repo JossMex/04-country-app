@@ -23,7 +23,7 @@ export class CountryService {
         map((resp) => CountryMapper.mapRestCountryArrayToCountry(resp)),
         catchError((error) => {
           console.error('Error en la petición HTTP', error);
-          return throwError(() => new Error(`No se pudo buscar el país con ese query ${query}`));
+          return throwError(() => new Error(`No se pudo buscar el país con ese query:  ${query}`));
         })
       );
   }
