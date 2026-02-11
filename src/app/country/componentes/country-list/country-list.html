@@ -28,7 +28,9 @@
             <span class="badge badge-secondary">{{country.population | number}}</span>
           </td>
           <td>
-            <a class="cursor-pointer link-primary"> Más información</a>
+            <a
+            [routerLink]="['/country/by', country.cca2]"
+            class="cursor-pointer link-primary"> Más información</a>
           </td>
       </tr>
       }
