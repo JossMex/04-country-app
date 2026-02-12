@@ -35,10 +35,25 @@ export class CountryService {
       .get<RESTCountry[]>(`${API_URL}/name/${query}`)
       .pipe(
         map((resp) => CountryMapper.mapRestCountryArrayToCountry(resp)),
-        delay(2000),
+        delay(3000),
         catchError((error) => {
           console.error('Error en la petición HTTP', error);
           return throwError(() => new Error(`No se pudo buscar el país con ese query:  ${query}`));
+        })
+      );
+  }
+
+  searchCountryByAlphaCode(code: string) {
+    const url = `${API_URL}/alpha/${code}`;
+
+    return this.http
+      .get<RESTCountry[]>(url)
+      .pipe(
+        map((resp) => CountryMapper.mapRestCountryArrayToCountry(resp)),
+        map((countries) => countries.at(0)), // Asegura que siempre se devuelva un array
+        catchError((error) => {
+          console.error('Error en la petición HTTP', error);
+          return throwError(() => new Error(`No se pudo buscar el país con ese código:  ${code}`));
         })
       );
   }
