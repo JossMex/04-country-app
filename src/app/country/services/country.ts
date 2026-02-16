@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RESTCountry } from '../interfaces/rest-countries.interface';
 import { CountryMapper } from '../mappers/country.mapper';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, of } from 'rxjs';
 import { map, catchError, delay } from 'rxjs/operators';
 import { Country } from '../interfaces/country.interface';
 
@@ -30,6 +30,7 @@ export class CountryService {
 
   searchByCountry(query: string): Observable<Country[]> {
     query = query.toLowerCase();
+
 
     return this.http
       .get<RESTCountry[]>(`${API_URL}/name/${query}`)
