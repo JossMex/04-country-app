@@ -14,6 +14,7 @@ const API_URL = 'https://restcountries.com/v3.1';
 export class CountryService {
   private http = inject(HttpClient);
   private queryCacheCapital = new Map<string, Country[]>();
+  private queryCacheCountry = new Map<string, Country[]>();
 
   searchBYcapital(query: string): Observable<Country[]> {
     query = query.toLowerCase();
@@ -41,11 +42,18 @@ export class CountryService {
     query = query.toLowerCase();
 
 
+    if (this.queryCacheCountry.has(query)) {
+      return of(this.queryCacheCountry.get(query)??[]); // Devuelve el resultado cacheado como un Observable
+    }
+
+    console.log(`llegando al servidor por ${query}`); // Solo se ejecutará si no hay un resultado cacheado
+
     return this.http
       .get<RESTCountry[]>(`${API_URL}/name/${query}`)
       .pipe(
         map((resp) => CountryMapper.mapRestCountryArrayToCountry(resp)),
-        delay(3000),
+        tap((countries) => this.queryCacheCountry.set(query, countries)), // Cachea el resultado
+        delay(2000),
         catchError((error) => {
           console.error('Error en la petición HTTP', error);
           return throwError(() => new Error(`No se pudo buscar el país con ese query:  ${query}`));
