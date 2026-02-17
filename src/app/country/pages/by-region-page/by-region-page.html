@@ -1,2 +1,22 @@
+<h1 class="mt-4 mb-8 text-3xl font-bold text-center">Por Región</h1>
+<h3 class="mb-4 text-lg">Selecciona una región para ver los países</h3>
+
+<section class="mt-2 row">
+  <div class="flex-col">
+    @for (region of regions; track region) {
+      <button class="mr-2  btn btn-outline w-25"
+      (click)="selectedRegion.set(region)"
+      [class.btn-primary]="selectedRegion() === region">
+       {{ region }}
+      </button>
+    }
+  </div>
+
 <!-- country-list -->
- <country-list [countries]="[]" />
+ <country-list
+  [countries]="countryResource.value() ?? []"
+  [errorMessage]="countryResource.error()"
+  [isEmpty]="countryResource.value()?.length === 0"
+  [isLoading]="countryResource.isLoading()"
+
+  />
