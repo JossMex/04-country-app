@@ -8,6 +8,7 @@
     #txtSearch
     (keyup.enter)="value.emit(txtSearch.value)"
     (keyup)="inpuntValue.set(txtSearch.value)"
+    [value]="initialValue()"
   />
 
   <button class="btn btn-primary" (click)="value.emit(txtSearch.value)">Buscar</button>
