@@ -4,7 +4,7 @@ import { SearchInput } from "../../componentes/search-input/search-input";
 import { CountryList } from "../../componentes/country-list/country-list";
 import { first, firstValueFrom, of } from 'rxjs';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -17,6 +17,7 @@ export class ByCapitalPage {
   countryService = inject(CountryService);
 
   activateRoute = inject(ActivatedRoute);
+  router = inject(Router);
   queryParam = this.activateRoute.snapshot.queryParamMap.get('query') ?? '';
 
    query = linkedSignal(() => this.queryParam);
@@ -25,8 +26,15 @@ export class ByCapitalPage {
   countryResource = rxResource({
     request: () => ({ query: this.query() }),
     loader: ({ request }) => {
-      console.log({query:request.query})
       if (!request.query) return of([]);
+
+      this.router.navigate(['/country/by-capital'],{
+        queryParams: {
+          query: request.query,
+
+        }
+      })
+
       return this.countryService.searchBYcapital(request.query);
     }
   });
