@@ -6,6 +6,20 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
+function validateRegion( queryParam: string ){
+  const validRegions: Record<string, Region> = {
+    'africa': 'Africa',
+    'americas': 'Americas',
+    'asia': 'Asia',
+    'europe': 'Europe',
+    'oceania': 'Oceania',
+    'antarctic' : 'Antarctic',
+  };
+
+  return validRegions[queryParam.toLowerCase()] ?? 'Americas';
+
+}
+
 @Component({
   selector: 'app-by-region-page',
   imports: [CountryList],
@@ -27,9 +41,9 @@ public regions: Region[] = [
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
 
-  queryParam = (this.activatedRoute.snapshot.queryParamMap.get('region') ?? '') as Region;
+  queryParam = this.activatedRoute.snapshot.queryParamMap.get('region') ?? '';
 
-  selectedRegion = linkedSignal<Region | null>(() => this.queryParam ?? 'Americas');
+  selectedRegion = linkedSignal<Region | null>(() => validateRegion(this.queryParam));
 
 
   countryResource = rxResource({
